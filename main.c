@@ -3,6 +3,12 @@
 #include <stdlib.h> // rand and srand
 #include <time.h>
 
+void displayList(short a, short b, char array[a][b+1]) {
+    for(int i = 0; i < a; i++) {
+        printf("%d --> %s\n", i+1, array[i]);
+    }
+}
+
 void noChar(short *var) { //checking for characters
     char cond, ch;
     do {
@@ -31,7 +37,7 @@ void inputPositive(short *variable) { // check for positive value
     } while(cond);
 }
 
-int random(int bottom, int top) {
+int random(short bottom, short top) {
     return bottom + rand()%(top - bottom + 1);
 }
 
@@ -81,9 +87,7 @@ int main() {
         }
 
         printf("Generated list:\n");
-        for(int i = 0; i < n_str; i++) {
-            printf("%d --> %s\n", i+1, list[i]);
-        }
+        displayList(n_str, str_size, list);
     } else {
         printf("Enter strings (max %hd characters):\n", str_size);
         for (int i = 0; i < n_str; i++) {
@@ -94,9 +98,8 @@ int main() {
     }
     sort(addr, n_str);
 
-    printf("\n\nSorted array:\n");
-    for(int i = 0; i < n_str; i++) {
-        printf("%d --> %s\n", i+1, list[i]);
-    }
+    printf("\n\nSorted list:\n");
+    displayList(n_str, str_size, list);
+
     return 0;
 }
