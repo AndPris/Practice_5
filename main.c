@@ -1,14 +1,8 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h> // rand and srand
+#include <time.h>
 
-void displayTable() {
-    for(int i = 0; i < 257; i++) {
-        printf("%d -> %c  ", i, i);
-        if(i%10==0) {
-            printf("\n");
-        }
-    }
-}
 void noChar(short *var) { //checking for characters
     char cond, ch;
     do {
@@ -37,6 +31,10 @@ void inputPositive(short *variable) { // check for positive value
     } while(cond);
 }
 
+int random(int bottom, int top) {
+    return bottom + rand()%(top - bottom + 1);
+}
+
 void sort(char *pointers[], short size) {
     for(short i = 0; i < size-1; i++) {
         for(short j = i + 1; j < size; j++) {
@@ -52,25 +50,51 @@ void sort(char *pointers[], short size) {
 }
 
 int main() {
-    short n_str, str_size;
+    short n_str, str_size, isRandom;
+    srand(time(0));
 
     printf("Size of the array:\n");
     inputPositive(&n_str);
     printf("Size of each string:\n");
     inputPositive(&str_size);
+    printf("Enter 0 to enter strings by your own or any other to generate them:\n");
+    noChar(&isRandom);
 
     char list[n_str][str_size+1];
     char *addr[n_str];
 
-    printf("Enter strings (max %hd characters):\n", str_size);
-    for(int i = 0; i < n_str; i++) {
-        fgets(list[i], str_size+1, stdin);
-        fflush(stdin);
-        addr[i] = list[i];
-    }
+    if (isRandom) {
+        char index;
+        for (int i = 0; i < n_str; i++) {
+            int j = 0;
 
+            do {
+                index = random(65, 122);
+                if ((index >= 65 && index <= 90) || (index >= 97 && index <= 122)) {
+                    list[i][j] = index;
+                    j++;
+                }
+            } while (j < str_size);
+
+            list[i][j] = '\0';
+            addr[i] = list[i];
+        }
+
+        printf("Generated list:\n");
+        for(int i = 0; i < n_str; i++) {
+            printf("%d --> %s\n", i+1, list[i]);
+        }
+    } else {
+        printf("Enter strings (max %hd characters):\n", str_size);
+        for (int i = 0; i < n_str; i++) {
+            fgets(list[i], str_size + 1, stdin);
+            fflush(stdin);
+            addr[i] = list[i];
+        }
+    }
     sort(addr, n_str);
 
+    printf("\n\nSorted array:\n");
     for(int i = 0; i < n_str; i++) {
         printf("%d --> %s\n", i+1, list[i]);
     }
