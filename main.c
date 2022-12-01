@@ -74,36 +74,40 @@ void sort(char *pointers[], short size) {
 }
 
 int main() {
-    short n_str, str_size, isRandom;
+    short n_str, str_size, isRandom, repeat;
     srand(time(0));
 
-    printf("Size of the array:\n");
-    inputPositive(&n_str);
-    printf("Size of each string:\n");
-    inputPositive(&str_size);
-    printf("Enter 0 to enter strings by your own or any other to generate them:\n");
-    noChar(&isRandom);
+    do {
+        printf("Size of the array:\n");
+        inputPositive(&n_str);
+        printf("Size of each string:\n");
+        inputPositive(&str_size);
+        printf("Enter 0 to enter strings by your own or any other number to generate them:\n");
+        noChar(&isRandom);
 
-    char list[n_str][str_size+1];
-    char *addr[n_str];
+        char list[n_str][str_size + 1];
+        char *addr[n_str];
 
-    if (isRandom) {
-        generateList(n_str, str_size, addr, list);
+        if (isRandom) {
+            generateList(n_str, str_size, addr, list);
 
-        printf("Generated list:\n");
-        displayList(n_str, str_size, list);
-    } else {
-        printf("Enter strings (max %hd characters):\n", str_size);
-        for (int i = 0; i < n_str; i++) {
-            fgets(list[i], str_size + 1, stdin);
-            fflush(stdin);
-            addr[i] = list[i];
+            printf("Generated list:\n");
+            displayList(n_str, str_size, list);
+        } else {
+            printf("Enter strings (max %hd characters):\n", str_size);
+            for (int i = 0; i < n_str; i++) {
+                fgets(list[i], str_size + 1, stdin);
+                fflush(stdin);
+                addr[i] = list[i];
+            }
         }
-    }
-    sort(addr, n_str);
+        sort(addr, n_str);
 
-    printf("\n\nSorted list:\n");
-    displayList(n_str, str_size, list);
+        printf("\n\nSorted list:\n");
+        displayList(n_str, str_size, list);
 
+        printf("Enter 0 to end the programme or any other number to continue:\n");
+        noChar(&repeat);
+    } while(repeat);
     return 0;
 }
