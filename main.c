@@ -41,7 +41,7 @@ int random(short bottom, short top) {
     return bottom + rand()%(top - bottom + 1);
 }
 
-void generateList(short amount, short size, char *pointers[], char array[][size+1]) {
+void generateList(short amount, short size, char array[][size+1]) {
     char index;
     for (int i = 0; i < amount; i++) {
         int j = 0;
@@ -55,18 +55,17 @@ void generateList(short amount, short size, char *pointers[], char array[][size+
         } while (j < size);
 
         array[i][j] = '\0';
-        pointers[i] = array[i];
     }
 }
 
-void sort(char *pointers[], short size) {
-    for(short i = 0; i < size-1; i++) {
-        for(short j = i + 1; j < size; j++) {
-            if (strcmp(pointers[i], pointers[j]) > 0) {
-                char temp[strlen(pointers[j]) + 1];
-                strcpy(temp, pointers[j]);
-                strcpy(pointers[j],pointers[i]);
-                strcpy(pointers[i], temp);
+void sort(short amount, short size, char array[][size+1]) {
+    for(short i = 0; i < amount; i++) {
+        for(short j = i + 1; j < amount; j++) {
+            if (strcmp(array[i], array[j]) > 0) {
+                char temp[strlen(array[j]) + 1];
+                strcpy(temp, array[j]);
+                strcpy(array[j],array[i]);
+                strcpy(array[i], temp);
             }
 
         }
@@ -85,10 +84,9 @@ int main() {
     noChar(&isRandom);
 
     char list[n_str][str_size+1];
-    char *addr[n_str];
 
     if (isRandom) {
-        generateList(n_str, str_size, addr, list);
+        generateList(n_str, str_size, list);
 
         printf("Generated list:\n");
         displayList(n_str, str_size, list);
@@ -97,10 +95,9 @@ int main() {
         for (int i = 0; i < n_str; i++) {
             fgets(list[i], str_size + 1, stdin);
             fflush(stdin);
-            addr[i] = list[i];
         }
     }
-    sort(addr, n_str);
+    sort(n_str, str_size, list);
 
     printf("\n\nSorted list:\n");
     displayList(n_str, str_size, list);
