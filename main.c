@@ -3,7 +3,7 @@
 #include <stdlib.h> // rand and srand
 #include <time.h>
 
-void displayList(short a, short b, char array[a][b+1]) {
+void displayList(short a, short b, char array[][b+1]) {
     for(int i = 0; i < a; i++) {
         printf("%d --> %s\n", i+1, array[i]);
     }
@@ -41,6 +41,24 @@ int random(short bottom, short top) {
     return bottom + rand()%(top - bottom + 1);
 }
 
+void generateList(short amount, short size, char *pointers[], char array[][size+1]) {
+    char index;
+    for (int i = 0; i < amount; i++) {
+        int j = 0;
+
+        do {
+            index = random(65, 122);
+            if ((index >= 65 && index <= 90) || (index >= 97 && index <= 122)) {
+                array[i][j] = index;
+                j++;
+            }
+        } while (j < size);
+
+        array[i][j] = '\0';
+        pointers[i] = array[i];
+    }
+}
+
 void sort(char *pointers[], short size) {
     for(short i = 0; i < size-1; i++) {
         for(short j = i + 1; j < size; j++) {
@@ -70,21 +88,7 @@ int main() {
     char *addr[n_str];
 
     if (isRandom) {
-        char index;
-        for (int i = 0; i < n_str; i++) {
-            int j = 0;
-
-            do {
-                index = random(65, 122);
-                if ((index >= 65 && index <= 90) || (index >= 97 && index <= 122)) {
-                    list[i][j] = index;
-                    j++;
-                }
-            } while (j < str_size);
-
-            list[i][j] = '\0';
-            addr[i] = list[i];
-        }
+        generateList(n_str, str_size, addr, list);
 
         printf("Generated list:\n");
         displayList(n_str, str_size, list);
